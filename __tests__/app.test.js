@@ -46,6 +46,24 @@ describe('lab-16-authentication routes', () => {
       });
   });
 
+  it('invalid login components resulting in message stating email/password incorrect', async () => {
+    await request(app)
+      .post('/api/auth/signup')
+      .send({ email: 'tanner1@alchemy1.com', password: '123' });
+    await request(app)
+      .post('/api/auth/signup')
+      .send({ email: 'tanner2@alchemy2.com', password: '456' });
+    await request(app)
+      .post('/api/auth/signup')
+      .send({ email: 'tanner3@alchemy3.com', password: '789' });
+    return request(app)
+      .post('/api/auth/login')
+      .send({ email: 'tanner3@alchemy3.com', password: '123' })
+      .then((response) => {
+        expect(response.body.message).toEqual('Email/password incorrect');
+      });
+  });
+
 
 
   afterAll(() => {
