@@ -64,6 +64,24 @@ describe('lab-16-authentication routes', () => {
       });
   });
 
+  it('invalid login components resulting in an error of 401', async () => {
+    await request(app)
+      .post('/api/auth/signup')
+      .send({ email: 'tanner1@alchemy1.com', password: '123' });
+    await request(app)
+      .post('/api/auth/signup')
+      .send({ email: 'tanner2@alchemy2.com', password: '456' });
+    await request(app)
+      .post('/api/auth/signup')
+      .send({ email: 'tanner3@alchemy3.com', password: '789' });
+    return request(app)
+      .post('/api/auth/login')
+      .send({ email: 'tanner3@alchemy3.com', password: '123' })
+      .then((response) => {
+        expect(response.status).toEqual(401);
+      });
+  });
+
   it('invalid email resulting in message stating email/password incorrect', async () => {
     await request(app)
       .post('/api/auth/signup')
