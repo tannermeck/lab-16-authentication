@@ -13,7 +13,6 @@ describe('lab-16-authentication routes', () => {
       .post('/api/auth/signup')
       .send({ email: 'tanner@alchemy.com', password: 'password' })
       .then((response) => {
-        console.log(response.body);
         expect(response.body).toEqual({ id: '1' });
       });
   });
@@ -36,9 +35,10 @@ describe('lab-16-authentication routes', () => {
     await request(app)
       .post('/api/auth/signup')
       .send({ email: 'tanner2@alchemy2.com', password: '456' });
-    return request(app)
+    await request(app)
       .post('/api/auth/signup')
-      .send({ email: 'tanner3@alchemy3.com', password: '789' })
+      .send({ email: 'tanner3@alchemy3.com', password: '789' });
+    return request(app)
       .post('/api/auth/login')
       .send({ email: 'tanner3@alchemy3.com', password: '789' })
       .then((response) => {
