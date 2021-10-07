@@ -100,6 +100,19 @@ describe('lab-16-authentication routes', () => {
       });
   });
 
+  it.only('logs in to the existing user with a response of the users cookie', async () => {
+    await request(app)
+      .post('/api/auth/signup')
+      .send({ email: 'tanner3@alchemy3.com', password: '789' });
+    return request(app)
+      .post('/api/auth/login')
+      .send({ email: 'tanner3@alchemy3.com', password: '789' })
+      .then((response) => {
+        const cookie = response.headers['set-cookie'];
+        const [userCookie] = cookie.map(item => item.split('; '));
+        expect(userCookie[0]).toEqual('userId=1');
+      });
+  });
 
 
   afterAll(() => {
