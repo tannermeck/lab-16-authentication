@@ -8,7 +8,7 @@ describe('lab-16-authentication routes', () => {
     return setup(pool);
   });
 
-  it('should post a user using /signup route', async () => {
+  it.only('should post a user using /signup route', async () => {
     return request(app)
       .post('/api/auth/signup')
       .send({ email: 'tanner@alchemy.com', password: 'password' })
@@ -24,7 +24,7 @@ describe('lab-16-authentication routes', () => {
       .post('/api/auth/signup')
       .send({ email: 'tanner@alchemy.com', password: '456' })
       .then((response) => {
-        expect(response).toEqual(400);
+        expect(response.status).toEqual(400);
       });
   });
 
