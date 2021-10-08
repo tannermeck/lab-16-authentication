@@ -100,7 +100,7 @@ describe('lab-16-authentication routes', () => {
       });
   });
 
-  it.only('logs in to the existing user with a response of the users cookie', async () => {
+  it('logs in to the existing user with a response of the users cookie', async () => {
     await request(app)
       .post('/api/auth/signup')
       .send({ email: 'tanner3@alchemy3.com', password: '789' });
@@ -114,6 +114,16 @@ describe('lab-16-authentication routes', () => {
       });
   });
 
+  it('should return a user id for the current logged in user', async () => {
+    const agent = request.agent(app);
+    await agent.post('/api/auth/signup')
+      .send({ email: 'tanner3@alchemy3.com', password: '789' });
+    await agent.post('/api/auth/login')
+      .send({ email: 'tanner3@alchemy3.com', password: '789' });
+    const response = await agent
+      .get('/api/auth/me');
+    expect(response.body).toEqual({ id: '1' });
+  });
 
   afterAll(() => {
     pool.end();
