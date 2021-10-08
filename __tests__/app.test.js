@@ -114,6 +114,7 @@ describe('lab-16-authentication routes', () => {
       });
   });
 
+  
   it('should return a user id for the current logged in user', async () => {
     const agent = request.agent(app);
     await agent.post('/api/auth/signup')
