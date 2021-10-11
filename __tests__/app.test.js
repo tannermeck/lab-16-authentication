@@ -111,6 +111,28 @@ describe('lab-16-authentication routes', () => {
     expect(response.body).toEqual({ id: '1', exp: expect.any(Number), iat: expect.any(Number), role: 'CUSTOMER' });
   });
 
+  it('should respond with a 403 since the requesting user is not an admin', async () => {
+    const agent = request.agent(app);
+    await agent.post('/api/auth/signup')
+      .send({ email: 'tanner3@alchemy3.com', password: '789' });
+    await agent.post('/api/auth/login')
+      .send({ email: 'tanner3@alchemy3.com', password: '789' });
+    const response = await agent
+      .delete('/api/auth/1');
+    expect(response.status).toEqual(403);
+  });
+
+  it('should respond with a 401 since the requesting user JWT is invalid', async () => {
+    const agent = request.agent(app);
+    await agent.post('/api/auth/login')
+      .send({ email: 'tanner3@alchemy3.com', password: '789' });
+    const response = await agent
+      .delete('/api/auth/1');
+    expect(response.status).toEqual(401);
+  });
+
+  
+
   afterAll(() => {
     pool.end();
   });
