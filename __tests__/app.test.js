@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool.js');
 const setup = require('../data/setup.js');
 const request = require('supertest');
 const app = require('../lib/app.js');
+const UserService = require('../lib/services/UserService.js');
 
 describe('lab-16-authentication routes', () => {
   beforeEach(() => {
@@ -129,6 +130,20 @@ describe('lab-16-authentication routes', () => {
     const response = await agent
       .delete('/api/auth/1');
     expect(response.status).toEqual(401);
+  });
+
+  it('allows admin to delete a user', async () => {
+    await UserService.create({
+      email: 'tanner@tanner.com',
+      password: 'password',
+      roleTitle: 'ADMIN'
+    });
+    const agent = request.agent(app);
+    await agent
+      .post('/api/auth/login')
+      .send({ email: 'tanner@tanner.com', password: 'password' });
+    const response = await agent.delete('/api/auth/1');
+    expect(response.body).toEqual('User deleted');
   });
 
   
