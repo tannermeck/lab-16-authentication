@@ -11,7 +11,7 @@ describe('lab-16-authentication routes', () => {
   it('should post a user using /signup route', async () => {
     return request(app)
       .post('/api/auth/signup')
-      .send({ email: 'tanner@alchemy.com', password: 'password', roleTitle: 'CUSTOMER' })
+      .send({ email: 'tanner@alchemy.com', password: 'password' })
       .then((response) => {
         expect(response.body).toEqual({ id: '1', role: 'CUSTOMER' });
       });
@@ -42,7 +42,7 @@ describe('lab-16-authentication routes', () => {
       .post('/api/auth/login')
       .send({ email: 'tanner3@alchemy3.com', password: '789' })
       .then((response) => {
-        expect(response.body).toEqual({ id: '3' });
+        expect(response.body).toEqual({ id: '3', role: 'CUSTOMER' });
       });
   });
 
@@ -123,7 +123,7 @@ describe('lab-16-authentication routes', () => {
       .send({ email: 'tanner3@alchemy3.com', password: '789' });
     const response = await agent
       .get('/api/auth/me');
-    expect(response.body).toEqual({ id: '1', exp: expect.any(Number), iat: expect.any(Number) });
+    expect(response.body).toEqual({ id: '1', exp: expect.any(Number), iat: expect.any(Number), role: 'CUSTOMER' });
   });
 
   afterAll(() => {
