@@ -146,7 +146,25 @@ describe('lab-16-authentication routes', () => {
     expect(response.text).toEqual('User deleted');
   });
 
-  
+  it('lets the user see all existing users if signed in', async () => {
+    await request(app)
+      .post('/api/auth/signup')
+      .send({ email: 'tanner1@alchemy1.com', password: '123' });
+    await request(app)
+      .post('/api/auth/signup')
+      .send({ email: 'tanner2@alchemy2.com', password: '456' });
+    await request(app)
+      .post('/api/auth/signup')
+      .send({ email: 'tanner3@alchemy3.com', password: '789' });
+    const agent = request.agent(app);
+    return await agent
+      .post('/api/auth/login')
+      .send({ email: 'tanner3@alchemy.com', password: '789' })
+      .get('/api/auth/all')
+      .then((response) => {
+        expect(response.body).toEqual({ id: '3', role: 'CUSTOMER' });
+      });
+  });
 
   afterAll(() => {
     pool.end();
