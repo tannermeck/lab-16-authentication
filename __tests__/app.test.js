@@ -132,7 +132,7 @@ describe('lab-16-authentication routes', () => {
     expect(response.status).toEqual(401);
   });
 
-  it('allows admin to delete a user', async () => {
+  it.only('allows admin to delete a user', async () => {
     await UserService.create({
       email: 'tanner@tanner.com',
       password: 'password',
@@ -143,7 +143,7 @@ describe('lab-16-authentication routes', () => {
       .post('/api/auth/login')
       .send({ email: 'tanner@tanner.com', password: 'password' });
     const response = await agent.delete('/api/auth/1');
-    expect(response.body).toEqual('User deleted');
+    expect(response.text).toEqual('User deleted');
   });
 
   
