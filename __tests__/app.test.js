@@ -167,7 +167,7 @@ describe('lab-16-authentication routes', () => {
       });
   });
 
-  it.only('lets the user see all existing users if signed in', async () => {
+  it('lets the user see all existing users if signed in', async () => {
     
     const agent = request.agent(app);
     await agent
@@ -180,6 +180,7 @@ describe('lab-16-authentication routes', () => {
       });
   });
 
+  
   afterAll(() => {
     pool.end();
   });
