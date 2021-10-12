@@ -132,7 +132,7 @@ describe('lab-16-authentication routes', () => {
     expect(response.status).toEqual(401);
   });
 
-  it.only('allows admin to delete a user', async () => {
+  it('allows admin to delete a user', async () => {
     await UserService.create({
       email: 'tanner@tanner.com',
       password: 'password',
